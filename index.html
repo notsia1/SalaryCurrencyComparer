@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MaaşRotası — Mesleğim Yurt Dışında Ne Kadar Ediyor?</title>
+<meta name="description" content="Türkiye'deki mesleğinin ortalama maaşını ABD, Almanya, İngiltere ve BAE'deki aynı meslekle döviz bazında karşılaştır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="eyebrow">Canlı kur · TRY bazlı</div>
+  <h1>Mesleğim Yurt Dışında<br>Ne Kadar Ediyor?</h1>
+  <p class="sub">Türkiye'deki maaşını seç, hedef ülkeyi seç — aynı meslekte oradaki ortalamayla kur üzerinden karşılaştır.</p>
+
+  <div class="ad-slot">Reklam Alanı · 728×90</div>
+
+  <div class="board">
+
+    <div class="row">
+      <label>Mesleğin</label>
+      <select id="profession"></select>
+    </div>
+
+    <div class="row">
+      <label>Karşılaştırılacak ülke</label>
+      <select id="country"></select>
+    </div>
+
+    <div class="route">
+      <span id="routeFrom">TÜRKİYE</span><span class="arrow">✈ →</span><span id="routeTo">—</span>
+    </div>
+
+    <div class="row" style="margin-bottom:0;">
+      <label>Senin net aylık maaşın (TL) — boş bırakırsan Türkiye ortalaması kullanılır</label>
+      <input id="userSalary" type="number" placeholder="örn. 75000">
+    </div>
+
+    <div id="result" class="result">
+      <div class="flapboard">
+        <div class="flapgroup">
+          <div class="flaplabel" id="flapLabelLeft">Senin maaşın</div>
+          <div class="flaprow" id="flapLeft"></div>
+        </div>
+        <div class="flapgroup">
+          <div class="flaplabel" id="flapLabelRight">Ülke ortalaması</div>
+          <div class="flaprow" id="flapRight"></div>
+        </div>
+      </div>
+
+      <div id="stampWrap"></div>
+      <p class="result-text" id="resultText"></p>
+      <canvas id="chart" height="160"></canvas>
+    </div>
+
+  </div>
+
+  <div class="ad-slot rect">Reklam Alanı · 300×250</div>
+
+  <footer>
+    RAKAMLAR TÜİK, KAMU MAAŞ TABLOLARI, BLS (ABD), DESTATIS (ALMANYA), ONS (İNGİLTERE) VE SEKTÖR RAPORLARINDAN DERLENEN YAKLAŞIK ORTALAMALARDIR. KİŞİSEL FİNANSAL KARAR İÇİN TEK BAŞINA KULLANILMAMALIDIR. KUR VERİSİ CANLI ÇEKİLİR.
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
