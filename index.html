@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MaaşRotası — Mesleğim Yurt Dışında Ne Kadar Ediyor?</title>
-<meta name="description" content="Türkiye'deki mesleğinin ortalama maaşını ABD, Almanya, İngiltere ve BAE'deki aynı meslekle döviz bazında karşılaştır.">
+<meta name="description" content="Türkiye'deki mesleğinin ortalama maaşını 8 farklı ülkedeki aynı meslekle döviz bazında karşılaştır.">
+<meta property="og:title" content="MaaşRotası — Mesleğim Yurt Dışında Ne Kadar Ediyor?">
+<meta property="og:description" content="Meslek ve ülke seç, kur bazında maaşını karşılaştır.">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -14,30 +17,38 @@
 
 <div class="wrap">
 
-  <div class="eyebrow">Canlı kur · TRY bazlı</div>
-  <h1>Mesleğim Yurt Dışında<br>Ne Kadar Ediyor?</h1>
-  <p class="sub">Türkiye'deki maaşını seç, hedef ülkeyi seç — aynı meslekte oradaki ortalamayla kur üzerinden karşılaştır.</p>
+  <div class="topbar">
+    <div class="eyebrow" id="txt-eyebrow">Canlı kur · TRY bazlı</div>
+    <button id="langToggle" class="lang-toggle" aria-label="Dili değiştir">EN</button>
+  </div>
 
-  <div class="ad-slot">Reklam Alanı · 728×90</div>
+  <h1 id="txt-h1">Mesleğim Yurt Dışında<br>Ne Kadar Ediyor?</h1>
+  <p class="sub" id="txt-sub">Türkiye'deki maaşını seç, hedef ülkeyi seç — aynı meslekte oradaki ortalamayla kur üzerinden karşılaştır.</p>
+
+  <div class="ad-slot" id="txt-ad1">Reklam Alanı · 728×90</div>
 
   <div class="board">
 
     <div class="row">
-      <label>Mesleğin</label>
+      <label id="txt-labelProf">Mesleğin</label>
       <select id="profession"></select>
     </div>
 
     <div class="row">
-      <label>Karşılaştırılacak ülke</label>
+      <label id="txt-labelCountry">Karşılaştırılacak ülke</label>
       <select id="country"></select>
     </div>
 
     <div class="route">
-      <span id="routeFrom">TÜRKİYE</span><span class="arrow">✈ →</span><span id="routeTo">—</span>
+      <span id="routeFrom">TÜRKİYE</span>
+      <svg class="route-line" viewBox="0 0 100 10" preserveAspectRatio="none">
+        <line id="routeDash" x1="2" y1="5" x2="98" y2="5" />
+      </svg>
+      <span id="routeTo">—</span>
     </div>
 
     <div class="row" style="margin-bottom:0;">
-      <label>Senin net aylık maaşın (TL) — boş bırakırsan Türkiye ortalaması kullanılır</label>
+      <label id="txt-labelSalary">Senin net aylık maaşın (TL) — boş bırakırsan Türkiye ortalaması kullanılır</label>
       <input id="userSalary" type="number" placeholder="örn. 75000">
     </div>
 
@@ -60,10 +71,10 @@
 
   </div>
 
-  <div class="ad-slot rect">Reklam Alanı · 300×250</div>
+  <div class="ad-slot rect" id="txt-ad2">Reklam Alanı · 300×250</div>
 
-  <footer>
-    RAKAMLAR TÜİK, KAMU MAAŞ TABLOLARI, BLS (ABD), DESTATIS (ALMANYA), ONS (İNGİLTERE) VE SEKTÖR RAPORLARINDAN DERLENEN YAKLAŞIK ORTALAMALARDIR. KİŞİSEL FİNANSAL KARAR İÇİN TEK BAŞINA KULLANILMAMALIDIR. KUR VERİSİ CANLI ÇEKİLİR.
+  <footer id="txt-footer">
+    RAKAMLAR TÜİK, KAMU MAAŞ TABLOLARI VE ULUSLARARASI SEKTÖR RAPORLARINDAN DERLENEN YAKLAŞIK ORTALAMALARDIR. KİŞİSEL FİNANSAL KARAR İÇİN TEK BAŞINA KULLANILMAMALIDIR. KUR VERİSİ CANLI ÇEKİLİR.
   </footer>
 
 </div>

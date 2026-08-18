@@ -4,8 +4,11 @@ const userSalaryInput = document.getElementById('userSalary');
 const resultBox = document.getElementById('result');
 const resultText = document.getElementById('resultText');
 const routeTo = document.getElementById('routeTo');
+const routeFrom = document.getElementById('routeFrom');
 const stampWrap = document.getElementById('stampWrap');
+const langToggle = document.getElementById('langToggle');
 let chart;
+let lang = 'tr';
 
 for (const [key, p] of Object.entries(DATA.professions)) {
   professionSelect.innerHTML += `<option value="${key}">${p.label}</option>`;
@@ -13,6 +16,28 @@ for (const [key, p] of Object.entries(DATA.professions)) {
 for (const [key, c] of Object.entries(DATA.countries)) {
   countrySelect.innerHTML += `<option value="${key}">${c.flag} ${c.label}</option>`;
 }
+
+function applyLang() {
+  const t = I18N[lang];
+  document.getElementById('txt-eyebrow').textContent = t.eyebrow;
+  document.getElementById('txt-h1').innerHTML = t.h1;
+  document.getElementById('txt-sub').textContent = t.sub;
+  document.getElementById('txt-labelProf').textContent = t.labelProf;
+  document.getElementById('txt-labelCountry').textContent = t.labelCountry;
+  document.getElementById('txt-labelSalary').textContent = t.labelSalary;
+  document.getElementById('txt-ad1').textContent = t.ad1;
+  document.getElementById('txt-ad2').textContent = t.ad2;
+  document.getElementById('txt-footer').textContent = t.footer;
+  routeFrom.textContent = t.routeFrom;
+  langToggle.textContent = lang === 'tr' ? 'EN' : 'TR';
+  document.documentElement.lang = lang;
+  calculate();
+}
+
+langToggle.addEventListener('click', () => {
+  lang = lang === 'tr' ? 'en' : 'tr';
+  applyLang();
+});
 
 function renderFlaps(containerId, text, prevText) {
   const container = document.getElementById(containerId);
@@ -51,12 +76,12 @@ async function loadRates() {
     const data = await res.json();
     rates = data.rates;
   } catch (e) {
-    rates = { USD: 0.023, EUR: 0.021, GBP: 0.018, AED: 0.085 };
+    rates = { USD: 0.023, EUR: 0.021, GBP: 0.018, AED: 0.085, CAD: 0.032, CHF: 0.021, AUD: 0.036 };
   }
-  calculate();
+  applyLang();
 }
 
-function fmt(n) { return Math.round(n).toLocaleString('tr-TR'); }
+function fmt(n) { return Math.round(n).toLocaleString(lang === 'tr' ? 'tr-TR' : 'en-US'); }
 
 function calculate() {
   if (!rates) return;
@@ -74,8 +99,8 @@ function calculate() {
   const diffPct = ((userAnnualForeign - countryAvgForeign) / countryAvgForeign) * 100;
   const cur = country.currency;
 
-  document.getElementById('flapLabelLeft').textContent = `Senin maaşın (${cur})`;
-  document.getElementById('flapLabelRight').textContent = `${country.label} ort. (${cur})`;
+  document.getElementById('flapLabelLeft').textContent = lang === 'tr' ? `Senin maaşın (${cur})` : `Your salary (${cur})`;
+  document.getElementById('flapLabelRight').textContent = lang === 'tr' ? `${country.label} ort. (${cur})` : `${country.label} avg. (${cur})`;
 
   const leftStr = fmt(userAnnualForeign);
   const rightStr = fmt(countryAvgForeign);
@@ -84,13 +109,21 @@ function calculate() {
   lastLeft = leftStr; lastRight = rightStr;
 
   const isPositive = diffPct >= 0;
-  stampWrap.innerHTML = `<span class="stamp ${isPositive ? 'pos' : 'neg'}">${isPositive ? '↑ KAZANÇLI' : '↓ KAYIPTA'} · %${fmt(Math.abs(diffPct))}</span>`;
+  const stampLabel = lang === 'tr'
+    ? (isPositive ? '↑ KAZANÇLI' : '↓ KAYIPTA')
+    : (isPositive ? '↑ AHEAD' : '↓ BEHIND');
+  stampWrap.innerHTML = `<span class="stamp ${isPositive ? 'pos' : 'neg'}">${stampLabel} · %${fmt(Math.abs(diffPct))}</span>`;
 
-  resultText.innerHTML = `
+  resultText.innerHTML = lang === 'tr' ? `
     <strong>${prof.label}</strong> mesleğinde Türkiye'de yıllık <strong>${fmt(userAnnualTL)} TL</strong> kazanıyorsun.
     Kur bazında bu, yaklaşık <strong>${leftStr} ${cur}</strong> eder.
     ${country.flag} ${country.label}'daki aynı meslek ortalaması ise <strong>${rightStr} ${cur}</strong> —
     yani oradaki ortalamadan ${isPositive ? 'daha fazla' : 'daha az'} kazanıyorsun (yaşam maliyeti farkı hariç, sadece kur bazında).
+  ` : `
+    As a <strong>${prof.label}</strong> in Turkey, you earn <strong>${fmt(userAnnualTL)} TL</strong> a year.
+    Converted at today's rate, that's about <strong>${leftStr} ${cur}</strong>.
+    The average for the same role in ${country.flag} ${country.label} is <strong>${rightStr} ${cur}</strong> —
+    so you're earning ${isPositive ? 'more' : 'less'} than that average (exchange-rate basis only, cost of living not included).
   `;
 
   resultBox.classList.add('show');
@@ -100,7 +133,7 @@ function calculate() {
   chart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['Senin maaşın', `${country.label} ort.`],
+      labels: [lang === 'tr' ? 'Senin maaşın' : 'Your salary', `${country.label} ${lang === 'tr' ? 'ort.' : 'avg.'}`],
       datasets: [{ data: [userAnnualForeign, countryAvgForeign], backgroundColor: ['#f2a83d', '#3a4150'], borderRadius: 4, barThickness: 46 }]
     },
     options: {

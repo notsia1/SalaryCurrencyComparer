@@ -11,22 +11,52 @@
   --hairline:#2a2f38;
 }
 *{box-sizing:border-box;}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important;}
+}
 body{
   margin:0;
-  background: radial-gradient(circle at 50% -10%, #1a1f28 0%, var(--board-bg) 55%);
+  background: radial-gradient(circle at var(--gx,50%) var(--gy,-10%), #1a1f28 0%, var(--board-bg) 55%);
+  animation: drift 18s ease-in-out infinite alternate;
   color:var(--ink);
   font-family:'IBM Plex Sans', sans-serif;
   min-height:100vh;
 }
+@keyframes drift{
+  0%{ --gx:42%; --gy:-14%; }
+  100%{ --gx:58%; --gy:-4%; }
+}
 .wrap{max-width:640px;margin:0 auto;padding:2.5rem 1.25rem 4rem;}
 
+/* ---- staggered load-in ---- */
+.wrap > *{opacity:0;animation:fadeUp .55s ease both;}
+.wrap > *:nth-child(1){animation-delay:.02s;}
+.wrap > *:nth-child(2){animation-delay:.08s;}
+.wrap > *:nth-child(3){animation-delay:.14s;}
+.wrap > *:nth-child(4){animation-delay:.2s;}
+.wrap > *:nth-child(5){animation-delay:.26s;}
+.wrap > *:nth-child(6){animation-delay:.32s;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;}
 .eyebrow{
   font-family:'IBM Plex Mono', monospace;
   font-size:.72rem;letter-spacing:.18em;color:var(--amber);
-  text-transform:uppercase;display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem;
+  text-transform:uppercase;display:flex;align-items:center;gap:.5rem;
 }
 .eyebrow::before{content:"●";font-size:.6rem;animation:blink 1.8s infinite;}
 @keyframes blink{0%,45%{opacity:1;}50%,95%{opacity:.15;}100%{opacity:1;}}
+
+.lang-toggle{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:.7rem;letter-spacing:.08em;
+  background:transparent;border:1px solid var(--hairline);border-radius:6px;
+  color:var(--ink-dim);padding:.3rem .6rem;cursor:pointer;
+  transition:border-color .2s, color .2s, transform .15s;
+}
+.lang-toggle:hover{border-color:var(--amber);color:var(--amber);transform:translateY(-1px);}
+.lang-toggle:active{transform:translateY(0);}
+
 h1{
   font-family:'Bebas Neue', sans-serif;
   font-size:clamp(2.1rem, 6vw, 2.9rem);
@@ -58,14 +88,20 @@ h1{
 select, input{
   width:100%;background:var(--flap-bg);border:1px solid var(--hairline);border-radius:8px;
   padding:.75rem .9rem;color:#f2f3f5;font-family:'IBM Plex Mono', monospace;
-  font-size:.95rem;letter-spacing:.02em;transition:border-color .2s, box-shadow .2s;
+  font-size:.95rem;letter-spacing:.02em;transition:border-color .2s, box-shadow .2s, transform .15s;
 }
+select:hover, input:hover{border-color:#3a4150;}
 select:focus, input:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(242,168,61,.15);}
 select{appearance:none; background-image:linear-gradient(45deg, transparent 50%, var(--amber) 50%), linear-gradient(135deg, var(--amber) 50%, transparent 50%); background-position: calc(100% - 18px) center, calc(100% - 13px) center; background-size:5px 5px, 5px 5px; background-repeat:no-repeat;}
 input::placeholder{color:#4b5361;}
 
 .route{display:flex;align-items:center;gap:.6rem;font-family:'IBM Plex Mono', monospace;font-size:.78rem;color:var(--amber-dim);margin-top:-.4rem;margin-bottom:1.25rem;}
-.route .arrow{color:var(--amber);}
+.route-line{flex:1;height:10px;min-width:40px;}
+.route-line line{
+  stroke:var(--amber);stroke-width:1;stroke-dasharray:3 4;
+  animation:dashMove 1.4s linear infinite;
+}
+@keyframes dashMove{to{stroke-dashoffset:-14;}}
 
 .result{margin-top:1.75rem;display:none;}
 .result.show{display:block;animation:riseIn .5s ease both;}
@@ -96,7 +132,7 @@ input::placeholder{color:#4b5361;}
 }
 .flap::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(0,0,0,.5);}
 .flap.sep{background:transparent;border:none;color:var(--ink-dim);width:10px;font-size:1rem;}
-.flap .digit{transition:transform .12s;}
+.flap .digit{transition:transform .12s;display:inline-block;}
 .flap.flip .digit{animation:flipDigit .12s linear;}
 @keyframes flipDigit{0%{transform:translateY(0);opacity:1;}45%{transform:translateY(-40%);opacity:.3;}55%{transform:translateY(40%);opacity:.3;}100%{transform:translateY(0);opacity:1;}}
 
