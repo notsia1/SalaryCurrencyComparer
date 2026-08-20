@@ -24,19 +24,6 @@ Node kurulu değilse: index.html dosyasına VS Code'da sağ tık →
 "Open with Live Server" (Live Server eklentisi kurulu olmalı) — npm'e
 hiç gerek kalmadan aynı işi görür.
 
-## Yayına alma (deploy)
-
-1. GitHub'a yükle: VS Code → Source Control sekmesi → "Publish to GitHub"
-   (repo'yu Public seç)
-2. [netlify.com](https://netlify.com) → ücretsiz hesap aç → "Add new site
-   → Import from GitHub" → bu repo'yu seç → Deploy
-   - Build command: boş bırak (build gerekmiyor, statik site)
-   - Publish directory: `/` (kök dizin)
-3. Birkaç saniyede canlı bir URL alırsın (`maas-rotasi.netlify.app`).
-   Ayarlardan kendi domainini (`maasrotasi.com` vb.) bağlayabilirsin.
-
-Her `git push` yaptığında Netlify otomatik yeniden yayına alır — elle
-yükleme gerekmez.
 
 ## Veri güncelleme
 
